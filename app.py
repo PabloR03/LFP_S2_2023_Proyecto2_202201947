@@ -3,9 +3,8 @@ from tkinter import Menu, messagebox, filedialog, scrolledtext, Text, DISABLED
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 import os
 #Importar clases y metodos
-from Analizar import Procesar
-from Cadenas import lexema_y_armado
-Cadenas = lexema_y_armado()
+from Analizador_Lexico import *
+from Analizador_Sintactico import *
 
 prompt = '>>'
 
@@ -45,7 +44,7 @@ class ventana_principal:
         op=Menu(boton_archivo,tearoff=0)
         boton_archivo["menu"]=op
         op.add_command(label="Reporte de Tokens")
-        op.add_command(label="Reporte de Errores")
+        op.add_command(label="Reporte de Errores", command=Errores_Lexico)
         op.add_command(label="Reporte de Arbol de Derivacion")
 
         # Cuadro de texto editable
@@ -95,26 +94,39 @@ class ventana_principal:
             return
     
     def Analizar(self):
-        Cadenas()
-        return
+        # Obtén el código del área de texto
+        code = self.cuadroTexto.get(1.0, tk.END)
+        imprimir_consola = ''
+        try:
+            # Ejecuta el análisis léxico
+            instrucciones_lexico = instruccion(code)
+            lista_instrucciones = []
+            while True:
+                instrucciones_lenguaje = instrucciones_sintactico(instrucciones_lexico)
+                if instrucciones_lenguaje:
+                    lista_instrucciones.append(instrucciones_lenguaje)
+                else:
+                    break
+            # Ejecutar instrucciones
+            for elemento in lista_instrucciones:
+                if isinstance(elemento, DeclaracionClaves):
+                    continue
+                elif isinstance(elemento, Imprimir):
+                    imprimir_consola += elemento.ejecutarT()
+                elif isinstance(elemento, Imprimirln):
+                    imprimir_consola += elemento.ejecutarT()
+            print(imprimir_consola)
+                    # Muestra el resultado en la consola de salida
+            self.cuadroTexto2.config(state='normal')
+            self.cuadroTexto2.delete(1.0, tk.END)
+            self.cuadroTexto2.insert(tk.END, imprimir_consola)
+            self.cuadroTexto2.config(state='disabled')
+            messagebox.showinfo("Análisis exitoso", "El código se analizó exitosamente.")
+        except Exception as e:
+            messagebox.showerror(f"Ocurrió un error al analizar el código: {str(e)}")
+            print("Ocurrió un error al analizar el código: ", e)
 
 
-'''
-
-    def Consola(self):
-        #tengo que ponerla xd, para que no se pueda editar, y solo leer archivos
-        # aqui volver el cuadro de texto no editable
-        #self.cuadroTexto.configure(state=DISABLED)
-        #tambien tengo que poner que se cree unas tipo >> para que se vea como la consola
-        prompt = '>>' eso ponerlo en cada linea del texto 2
-        with open(self.ruta_seleccionada, "r") as archivo:
-            for linea in archivo:
-                # Verifica si la línea comienza con "#"
-                if linea.startswith("#"):
-                    # Agrega la línea al segundo ScrollText
-                    self.cuadroTexto2.insert(tk.END,prompt + linea)
-        self.cuadroTexto.configure(state=DISABLED)
-'''
 
 if __name__ == "__main__":
     root = tk.Tk()

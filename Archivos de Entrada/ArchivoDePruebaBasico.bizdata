@@ -9,7 +9,7 @@ hola esto es parte del comentario
 '''   
  COMENTARIO MULTILINEA 
  esto tambien es parte del comentario
-  '''
+  azy'''
 
 claves = ["codigo", "producto", "precio_compra", "precio_venta", "stock"]
 

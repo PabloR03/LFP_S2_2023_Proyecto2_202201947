@@ -1,0 +1,6 @@
+imprimir("Reporte de ");
+imprimir("Abarroteria");
+imprimirln("que");
+imprimirln("pedo");
+
+
