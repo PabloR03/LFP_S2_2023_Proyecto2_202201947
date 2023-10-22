@@ -2,14 +2,16 @@ from Errores.Errores import *
 from Instrucciones.DeclaracionClaves import *
 from Instrucciones.Imprimir import *
 from Instrucciones.Imprimirln import *
+#from Analizador_Lexico import achu, achuss
 global n_linea
 global n_columna
 global lista_lexemas_sintacticos
 global instrucciones_sintacticas
 lista_errores = []
 
-
 def instrucciones_sintactico(lista_lexemas):
+    #if achu[0] == '#':
+    #   return
 
     while lista_lexemas:
 

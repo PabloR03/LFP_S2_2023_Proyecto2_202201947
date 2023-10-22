@@ -1,5 +1,5 @@
 from Abstract.Abstract import Expression
-
+promt =  ">>>"
 class Imprimirln(Expression):
 
         def __init__(self, texto, fila, columna):
@@ -10,7 +10,7 @@ class Imprimirln(Expression):
             pass
 
         def ejecutarT(self):
-            return self.texto
+            return promt + self.texto
 
         def getFila(self):
             return super().getFila()

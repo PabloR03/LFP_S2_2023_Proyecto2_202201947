@@ -1,4 +1,5 @@
 from Abstract.Abstract import Expression
+promt =  ">>>"
 
 class Imprimir(Expression):
 
@@ -10,7 +11,7 @@ class Imprimir(Expression):
             pass
 
         def ejecutarT(self):
-            return self.texto
+            return promt + self.texto
 
         def getFila(self):
             return super().getFila()

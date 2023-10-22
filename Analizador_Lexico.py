@@ -46,6 +46,8 @@ global n_linea
 global n_columna
 global instrucciones
 global lista_lexemas
+global achu
+global achus
 
 n_linea = 1
 n_columna = 1
@@ -187,6 +189,57 @@ def instruccion(cadena):
             n_columna += 1
 
     return lista_lexemas
+
+def Comentariol(code):
+    lexemass = []
+    puntero = 0
+    while puntero < len(code):
+        char = code[puntero]
+        puntero += 1
+        if char == '#':
+            lexema = Armar_Comentariol(code[puntero-1:])
+            if lexema is not None:
+                lexemass.append(lexema)
+    return lexemass
+
+def Armar_Comentariol(code):
+    lexemass = ''
+    for char in code:
+        if char == '\n':
+            return lexemass
+        lexemass += char
+    
+    achu = lexemass
+    return None
+
+def Comentarioll(code):
+    lexemass = []
+    puntero = 0
+    while puntero < len(code):
+        char = code[puntero]
+        puntero += 1
+        if char == "'":
+            code[puntero:]
+            if char == "'":
+                code[puntero:]
+                if char == "'":
+                    lexemasss = Armar_Comentarioll(code[puntero:])
+                    if lexemasss is not None:
+                        lexemass.append(lexemasss)
+    return lexemass
+
+def Armar_Comentarioll(code):
+    lexemasss = ''
+    for char in code:
+        if char == "'":
+            if char == "'":
+                    if char == "'":
+                        return lexemasss
+        lexemasss += char
+    achus = lexemasss
+    return None
+
+
 
 
 def armar_lexema(cadena):

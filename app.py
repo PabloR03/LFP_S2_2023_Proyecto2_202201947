@@ -94,10 +94,24 @@ class ventana_principal:
             return
     
     def Analizar(self):
+        
         # Obtén el código del área de texto
         code = self.cuadroTexto.get(1.0, tk.END)
         imprimir_consola = ''
         try:
+            #lee los comentarios por aparte no hay clavo porque igual los debe ignorar
+            comentariodeunalinea = Comentariol(code)
+            print("Comentarios del tipo #" + '\n')
+            for i in comentariodeunalinea:
+                print(i)
+                self.cuadroTexto2.insert(tk.END, i)
+            comentariodevariaslineas = Comentarioll(code)
+            comentariodevariaslineas3 = comentariodevariaslineas[2]
+            print("Comentarios multilinea")
+            print("'''"+ '\n' + comentariodevariaslineas3 + '\n' + "'''")
+            self.cuadroTexto2.insert(tk.END, "'''"+ '\n' + comentariodevariaslineas3 + '\n' + "'''")
+
+            #self.cuadroTexto2.configure(state=DISABLED)
             # Ejecuta el análisis léxico
             instrucciones_lexico = instruccion(code)
             lista_instrucciones = []
