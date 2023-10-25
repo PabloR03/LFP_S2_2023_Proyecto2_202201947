@@ -1,0 +1,41 @@
+Claves = [
+    "codigo", "producto", "precio_compra", 
+    "precio_venta", "stock"
+]
+
+Registros = [
+    {1, "Barbacoa", 10.50, 20.00, 6}
+    {2, "Salsa", 13.00, 16.00, 7}
+    {3, "Mayonesa", 15.00, 18.00, 8}
+    {4, "Mostaza", 14.00, 16.00, 4}
+]
+
+# Este Es Un Comentario De Prueba
+# conteo(); 
+
+''' 
+Este Es Un Comentario Multilínea 
+'''   
+
+imprimir("Reporte de ");
+imprimir("Abarrotería");
+
+imprimirln("Reporte de ");
+imprimirln("Abarrotería");
+
+
+conteo(); 
+
+promedio("precio_venta");
+
+contarsi("precio_venta", 16.00);
+
+datos();
+
+sumar("stock");
+
+max("precio_compra");
+
+min("precio_venta");
+
+exportarReporte("Reporte HTML De Abarrotería");

@@ -1,0 +1,131 @@
+	Claves = ["",""]
+Terminales = {'Claves', igual, coriz, corder, comillas, coma, texto}
+No Terminales = {q0, q1, q2, q3}
+Inicio = {q0}
+Producciones:
+<q0>::= Claves igual <q1>
+<q1>::= coriz <q2> corder
+<q2>::= comillas texto commillas <q3>
+<q3>::= coma <q2> | e
+
+	Registros = [{,"",}{,"",}]
+Terminales = {'Registros', igual, coriz, corder, llaiz, llader, comillas, coma, texto}
+No Terminales = {q0, q1, q2, q3, q4}
+Inicio = {q0}
+Producciones:
+<q0>::= Registros igual <q1>
+<q1>::= coriz <q2> corder
+<q2>::= llaiz <q3> llader
+<q3>::= texto <q4> | comillas texto comillas <q4>
+<q4>::= coma <q3> | e
+
+	#Comentario
+Terminales = {numeral, texto}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= numeral <q1>
+<q1>::= texto <q2> | e
+<q2>::= texto <q1> | e
+
+	'''
+Terminales = {',texto, '\n'}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= ''' <q1> '''
+<q1>::= texto <q2> | \n <q2> | e
+<q2>::= texto <q1> | \n <q2> | e
+
+	imprimir("");
+Terminales = {'imprimir',pariz, parder, texto, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= imprimir <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	implimirln("");
+Terminales = {'imprimirln',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= imprimirln <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	conteo();
+Terminales = {'conteo',pariz, parder, puntcoma}
+No Terminales = {q0, q1}
+Inicio = {q0}
+Producciones:
+<q0>::= conteo <q1> puntcoma
+<q1>::= pariz parder
+
+	datos();
+Terminales = {'imprimirln',pariz, parder, puntcoma}
+No Terminales = {q0, q1}
+Inicio = {q0}
+Producciones:
+<q0>::= datos <q1> puntcoma
+<q1>::= pariz parder
+
+	promedio("");
+Terminales = {'promedio',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= promedio <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	contarsi("", );
+Terminales = {'contarsi',pariz, parder, coma, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2, q3}
+Inicio = {q0}
+Producciones:
+<q0>::= contarsi <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla <q3>
+<q3>::= coma texto | coma e
+
+	sumar("");
+Terminales = {'sumar',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= sumar <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	max("");
+Terminales = {'max',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= max <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	min("");
+Terminales = {'min',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= min <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+	exportarReporte("");
+Terminales = {'exportarReporte',pariz, parder, caracter, comilla, puntcoma}
+No Terminales = {q0, q1, q2}
+Inicio = {q0}
+Producciones:
+<q0>::= exportarReporte <q1> puntcoma
+<q1>::= pariz <q2> parder
+<q2>::= comilla texto comilla
+
+
+
+

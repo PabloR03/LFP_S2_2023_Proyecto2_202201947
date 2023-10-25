@@ -1,293 +1,482 @@
-from Abstract.Numero import *
-from Abstract.Lexema import *
-from Instrucciones.Texto import *
-from Errores.Errores import *
-promt = '>>>'
-reserverd = {
-    'Rclaves'           : 'claves',
-    'Rclave_1'          : 'clave_1',
-    'Rclave_2'          : 'clave_2',
-    'Rclave_3'          : 'clave_3',
-    'Rclave_4'          : 'clave_4',
-    'Rclave_5'          : 'clave_5',
-    'Rregistros'        : 'Registros',
-    'Rvalor_1'          : 'valor_1',
-    'Rvalor_2'          : 'valor_2',
-    'Rvalor_3'          : 'valor_3',
-    'Rvalor_4'          : 'valor_4',
-    'Rvalor_5'          : 'valor_5',
-    'Rcomentariol'      : '#',
-    'Rcomentarioll'     : " ''' ",
-    'Rllaveapertura'    : '{',
-    'Rllavecierre'      : '}',
-    'Rparizq'           : '(',
-    'Rparder'           : ')',
-    'Rcorcheteapertura' : '[',
-    'Rcorchetecierre'   : ']',
-    'Rcoma'             : ',',
-    'Rpuntoycoma'       : ';',
-    'Rpunto'            : '.',
-    'Rigual'            : '=',
-    'Rcomillas'         : '"',
-    'Rimprimir'         : 'imprimir',
-    'Rimprimirln'       : 'imprimirln',
-    'Rconteo'           : 'conteo',
-    'Rpromedio '        : 'promedio',
-    'Rcontarsi'         : 'contarsi',
-    'Rdatos'            : 'datos',
-    'Rsumar'            : 'sumar',
-    'Rmaximo'           : 'max',
-    'Rminimo'           : 'min',
-    'Rexportarreporte'  : 'exportarReporte',
-}
+from Objetos.Lexema import Lexema
+from Objetos.Error import Error
 
-lexema = list(reserverd.values())
-global n_linea
-global n_columna
-global instrucciones
-global lista_lexemas
-global achu
-global achus
+class Lexico:
 
-n_linea = 1
-n_columna = 1
-lista_lexemas = []
-instrucciones = []
-lista_errores = []
+    def __init__(self):
+        self.lista_lexemas = []
+        self.lista_errores = []
+        self.n_linea = 1
+        self.n_columna = 1
 
+    def analizador_lexico(self, cadena):
+        lexema = ''
+        puntero = 0
 
-def instruccion(cadena):
-    global n_linea
-    global n_columna
-    global lista_lexemas
-    lexema = ''
-    puntero = 0
-    palabras_reservadas = ['Claves', 'imprimir', 'imprimirln', 'conteo', 'promedio', 'contarsi', 'datos', 'sumar',
-                        'max', 'min', 'exportarReporte']
-    while cadena:
-        char = cadena[puntero]
-        puntero += 1
+        while cadena:
+            char = cadena[puntero]
+            puntero += 1
 
-        if char == '"':       #! leemos nuestra cadena y al encontrar " que habre empieza a crear el token
-            l = Lexema('"', n_linea, n_columna, 'COMILLA')
-            lista_lexemas.append(l)
-            lexema, cadena = armar_lexema(cadena[puntero:])
-            if lexema and cadena:
-                n_columna += 1
-                #Armar lexema como clase
-                l = Lexema(lexema, n_linea, n_columna, 'TEXTO')
-                lista_lexemas.append(l)  #! Agregamos los lexemas a la lista_lexema
-                n_columna += len(lexema) + 1
-                puntero = 0
-            l = Lexema('"', n_linea, n_columna, 'COMILLA')
-            lista_lexemas.append(l)
-            n_columna += 1
-            puntero = 0
-
-        elif cadena.startswith("Claves"):
-            lexema, cadena = armar_lexema(cadena)
-            if lexema and cadena:
-                n_columna += 1
-                l = Lexema(lexema, n_linea, n_columna, 'CLAVES')
-                lista_lexemas.append(l)
-                n_columna += len(lexema) + 1
+            if char == '"':       #! leemos nuestra cadena y al encontrar " que habre empieza a crear el token
+                l = Lexema('"', self.n_linea, self.n_columna, 'COMILLA')
+                self.lista_lexemas.append(l)
+                lexema, cadena = self.armar_cadena(cadena[puntero:])
+                if lexema and cadena:
+                    self.n_columna += 1
+                    #Armar lexema como clase
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'TEXTO')
+                    self.lista_lexemas.append(l)  #! Agregamos los lexemas a la lista_lexema
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('"', self.n_linea, self.n_columna, 'COMILLA')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
                 puntero = 0
 
-        elif cadena.startswith("imprimir"):
-            lexema, cadena = armar_lexema(cadena)
-            if lexema and cadena:
-                n_columna += 1
-                l = Lexema(lexema, n_linea, n_columna, 'IMPRIMIR')
-                lista_lexemas.append(l)
-                n_columna += len(lexema) + 1
-                puntero = 0
-            l = Lexema('(', n_linea, n_columna, 'PARIZQ')
-            lista_lexemas.append(l)
-            n_columna += 1
-            puntero = 0
-
-        elif cadena.startswith("imprimirln"):
-            lexema, cadena = armar_lexema(cadena)
-            if lexema and cadena:
-                n_columna += 1
-                l = Lexema(lexema, n_linea, n_columna, 'IMPRIMIRLN')
-                lista_lexemas.append(l)
-                n_columna += len(lexema) + 1
-                puntero = 0
-            l = Lexema('(', n_linea, n_columna, 'PARIZQ')
-            lista_lexemas.append(l)
-            n_columna += 1
-            puntero = 0
-
-        elif char.isdigit():
-            token, cadena = armar_numero(cadena)
-            if token and cadena:
-                n_columna += 1
-                #! Armamos lexema como clase
-                n = Numero(token, n_linea, n_columna)
-
-                lista_lexemas.append(n)
-                n_columna += len(str(token)) + 1
+            elif char == "'":       #! leemos nuestra cadena y al encontrar " que habre empieza a crear el token
+                l = Lexema("'", self.n_linea, self.n_columna, 'COMILLA_SIMPLE')
+                self.lista_lexemas.append(l)
+                lexema, cadena = self.armar_comentario(cadena[puntero:])
+                if lexema and cadena:
+                    self.n_columna += 1
+                    #Armar lexema como clase
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'TEXTO')
+                    self.lista_lexemas.append(l)  #! Agregamos los lexemas a la lista_lexema
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema("'", self.n_linea, self.n_columna, 'COMILLA_SIMPLE')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
                 puntero = 0
 
-        elif char == '[' or char == ']':
-            # ! Armamos lexema como clase
-            c = Lexema(char, n_linea, n_columna, 'CORCHETE')
+            elif cadena.startswith("#"):
+                lexema, cadena = self.armar_cadena(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'COMENTARIO 1 LINEA')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
 
-            lista_lexemas.append(c)
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("Claves"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'CLAVES')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
 
-        elif char == ';':
+            elif cadena.startswith("Registros"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'REGISTROS')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
 
-            c = Lexema(char, n_linea, n_columna, 'PUNTOYCOMA')
+            elif cadena.startswith("imprimirln"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'IMPRIMIRLN')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-            lista_lexemas.append(c)
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("imprimir"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'IMPRIMIR')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-        elif char == '=':
-            c = Lexema(char, n_linea, n_columna, 'IGUAL')
-            lista_lexemas.append(c)
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("conteo"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'CONTEO')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-        elif char == ',':
-            c = Lexema(char, n_linea, n_columna, 'COMA')
-            lista_lexemas.append(c)
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("promedio"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'PROMEDIO')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-        elif char == ')':
-            c = Lexema(char, n_linea, n_columna, 'PARDER')
-            lista_lexemas.append(c)
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("contarsi"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'CONTARSI')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-        elif char == "\t":
-            n_columna += 4
-            cadena = cadena[4:]
-            puntero = 0
-        elif char == "\n":
-            cadena = cadena[1:]
-            puntero = 0
-            n_linea += 1
-            n_columna = 1
-        elif char == ' ' or char == '\r' or char == '.' or char == ':':
-            n_columna += 1
-            cadena = cadena[1:]
-            puntero = 0
-        else:
-            lista_errores.append(Errores(char, "Léxico",n_linea, n_columna))
-            cadena = cadena[1:]
-            puntero = 0
-            n_columna += 1
+            elif cadena.startswith("datos"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'DATOS')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-    return lista_lexemas
+            elif cadena.startswith("sumar"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'SUMAR')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
+            
+            elif cadena.startswith("max"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'MAX')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-def Comentariol(code):
-    lexemass = []
-    puntero = 0
-    while puntero < len(code):
-        char = code[puntero]
-        puntero += 1
-        if char == '#':
-            lexema = Armar_Comentariol(code[puntero-1:])
-            if lexema is not None:
-                lexemass.append(lexema)
-    return lexemass
+            elif cadena.startswith("min"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'MIN')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-def Armar_Comentariol(code):
-    lexemass = ''
-    for char in code:
-        if char == '\n':
-            return lexemass
-        lexemass += char
-    
-    achu = lexemass
-    return None
+            elif cadena.startswith("exportarReporte"):
+                lexema, cadena = self.armar_lexema(cadena)
+                if lexema and cadena:
+                    self.n_columna += 1
+                    l = Lexema(lexema, self.n_linea, self.n_columna, 'EXPORTAR_REPORTE')
+                    self.lista_lexemas.append(l)
+                    self.n_columna += len(lexema) + 1
+                    puntero = 0
+                l = Lexema('(', self.n_linea, self.n_columna, 'PARENTESIS_IZQUIERDO')
+                self.lista_lexemas.append(l)
+                self.n_columna += 1
+                puntero = 0
 
-def Comentarioll(code):
-    lexemass = []
-    puntero = 0
-    while puntero < len(code):
-        char = code[puntero]
-        puntero += 1
-        if char == "'":
-            code[puntero:]
-            if char == "'":
-                code[puntero:]
-                if char == "'":
-                    lexemasss = Armar_Comentarioll(code[puntero:])
-                    if lexemasss is not None:
-                        lexemass.append(lexemasss)
-    return lexemass
+            elif char.isdigit():
+                token, cadena = self.armar_numero(cadena)
+                if token and cadena:
+                    self.n_columna += 1
+                    #! Armamos lexema como clase
+                    n = Lexema(token, self.n_linea, self.n_columna, "NUMERO")
 
-def Armar_Comentarioll(code):
-    lexemasss = ''
-    for char in code:
-        if char == "'":
-            if char == "'":
-                    if char == "'":
-                        return lexemasss
-        lexemasss += char
-    achus = lexemasss
-    return None
+                    self.lista_lexemas.append(n)
+                    self.n_columna += len(str(token)) + 1
+                    puntero = 0
 
+            elif char == '[' or char == ']':
+                # ! Armamos lexema como clase
+                c = Lexema(char, self.n_linea, self.n_columna, 'CORCHETES')
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
+            
 
+            elif char == '{' or char == '}':
+                # ! Armamos lexema como clase
+                c = Lexema(char, self.n_linea, self.n_columna, 'LLAVES')
 
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-def armar_lexema(cadena):
-    global n_linea
-    global n_columna
-    global lista_lexemas
-    lexema = ''
-    puntero = ''
+            elif char == ';':
+                c = Lexema(char, self.n_linea, self.n_columna, 'PUNTO_Y_COMA')
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-    for char in cadena:
-        puntero += char
-        if char == '"' or char == '\t' or char == '(' or char == ')':
-            return lexema, cadena[len(puntero):]    #! si encuentra una  " termino de leer el token
-        else:
-            lexema += char   #! creamos nuestros Token
-    return None, None
+            elif char=="0":
+                print("ENCONTRÓ UN CERO")
+                nuevo_lexema = Lexema(0, self.n_linea, self.n_columna, 'NUMERO')
+                self.lista_lexemas.append(nuevo_lexema)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-def armar_numero(cadena):
-    numero = ''
-    puntero = ''
-    is_decimal =  False
+            elif char == '=':
+                c = Lexema(char, self.n_linea, self.n_columna, 'IGUAL')
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-    for char in cadena:
-        puntero += char
-        if char == '.':
-            is_decimal = True
+            elif char == ',':
+                c = Lexema(char, self.n_linea, self.n_columna, 'COMA')
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-        if char == ' ' or char == '\n' or char == '\t':
-            if is_decimal:
-                return float(numero), cadena[len(puntero)-1:]
+            elif char == ')':
+                c = Lexema(char, self.n_linea, self.n_columna, 'PARENTESIS_DERECHO')
+                self.lista_lexemas.append(c)
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
+
+            elif char == "\t":
+                self.n_columna += 4
+                cadena = cadena[4:]
+                puntero = 0
+
+            elif char == "\n":
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_linea += 1
+                self.n_columna = 1
+
+            elif char == ' ' or char == '\r':
+                self.n_columna += 1
+                cadena = cadena[1:]
+                puntero = 0
+
             else:
-                return int(numero), cadena[len(puntero)-1:]
-        else:
-            if char != ',': #! si no es una coma lo agregamos al numero
-                numero += char
-    return None, None
+                self.lista_errores.append(Error(char, "Léxico",self.n_linea, self.n_columna))
+                cadena = cadena[1:]
+                puntero = 0
+                self.n_columna += 1
 
-def Errores_Lexico():
-    #llama a la lista de errores para obtener los datos y guardarlos en el archivo de salida
-    global lista_errores
-    formatoErrores = '{\n\t"errores":[\n'
-    for i in range(len(lista_errores)):
-        error = lista_errores[i]
-        formatoErrores += error.operar(i+1)
-        if i != len(lista_errores)-1:
-            formatoErrores += ',\n'
-        else:
-            formatoErrores += '\n'
-    formatoErrores += '\t]\n}'
-    #retorna el formato de errores en el archivo de salida
-    return print(formatoErrores)
+    def armar_lexema(self, cadena):
+        lexema = ''
+        puntero = ''
+        for char in cadena:
+            puntero += char
+            if char == '"' or char == '\n' or char == '\t' or char == '(' or char == ')' or char == ' ':
+                return lexema, cadena[len(puntero):]   
+            else:
+                lexema += char
+        return None, None
+
+    def armar_cadena(self, cadena):
+        lexema = ''
+        puntero = ''
+        for char in cadena:
+            puntero += char
+            if char == '"' or char == '\n':
+                return lexema, cadena[len(puntero):]   
+            else:
+                lexema += char
+        return None, None
+    
+    def armar_comentario(self, cadena):
+        lexema = ''
+        puntero = ''
+        for char in cadena:
+            puntero += char
+            if char == "'":
+                return lexema, cadena[len(puntero):]   
+            else:
+                lexema += char
+        return None, None
+
+    def armar_numero(self, cadena):
+        numero = ''
+        puntero = ''
+        is_decimal =  False
+        for char in cadena:
+            puntero += char
+            if char == '.':
+                is_decimal = True
+            if char=="," or char==")" or char == ' ' or char == '\n' or char == '\t' or char=="}":
+                if is_decimal:
+                    return float(numero), cadena[len(puntero)-1:]
+                else:
+                    return int(numero), cadena[len(puntero)-1:]
+            elif char != ',' or char != ')':
+                    numero += char
+        return None, None
+    
+    def reporte_tokens(self):
+        nombre_archivo = "REportes/202201947_rTokens.html"
+        # Generar la tabla HTML
+        tabla_html = """
+        <table>
+            <tr>
+                <th>Lexema</th>
+                <th>Token</th>
+                <th>Fila</th>
+                <th>Columna</th>
+            </tr>
+            """
+        for lexema_obj in self.lista_lexemas:
+            fila_html = f"""
+            <tr>
+                <td>{lexema_obj.lexema}</td>
+                <td>{lexema_obj.tipo}</td>
+                <td>{lexema_obj.fila}</td>
+                <td>{lexema_obj.columna}</td>
+            </tr>"""
+            tabla_html += fila_html
+
+        tabla_html += "</table>"
+
+        html = f"""<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Reporte De Tokens</title>
+                        <style>
+                            body {{
+                                font-family: Arial, sans-serif;
+                                background-color: #fff;
+                            }}
+                            .tabla-container {{
+                                text-align: center;
+                                margin: 20px auto;
+                                width: 80%;
+                            }}
+                            .tabla-container table {{
+                                width: 100%;
+                                border-collapse: collapse;
+                            }}
+                            .tabla-container th, .tabla-container td {{
+                                padding: 8px 12px;
+                                border: 1px solid #444;
+                            }}
+                            .tabla-container th {{
+                                background-color: #333;
+                                color: white;
+                            }}
+                            .tabla-container tr:nth-child(even) {{
+                                background-color: #f2f2f2;
+                            }}
+                            .tabla-container tr:nth-child(odd) {{
+                                background-color: #fff;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <h1 style="text-align:center">Reporte De Tokens</h1>
+                        <div class="tabla-container">
+                            {tabla_html}
+                        </div>
+                    </body>
+                    </html>"""
+
+        with open(nombre_archivo, "w") as archivo:
+            archivo.write(html)
+
+    def reporte_errores_lexicos(self):
+        nombre_archivo = "Reportes/202201947_rErroresLexico.html"
+        # Generar la tabla HTML
+        tabla_html = """
+        <table>
+            <tr>
+                <th>Token</th>
+                <th>Tipo Error</th>
+                <th>Fila</th>
+                <th>Columna</th>
+            </tr>
+            """
+        for error in self.lista_errores:
+            fila_html = f"""
+            <tr>
+                <td>{error.error}</td>
+                <td>{error.tipo}</td>
+                <td>{error.fila}</td>
+                <td>{error.columna}</td>
+            </tr>"""
+            tabla_html += fila_html
+
+        tabla_html += "</table>"
+
+        html = f"""<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Reporte De Errores</title>
+                        <style>
+                            body {{
+                                font-family: Arial, sans-serif;
+                                background-color: #f2f2f2;
+                            }}
+                            .tabla-container {{
+                                text-align: center;
+                                margin: 20px auto;
+                                width: 80%;
+                            }}
+                            .tabla-container table {{
+                                width: 100%;
+                                border-collapse: collapse;
+                            }}
+                            .tabla-container th, .tabla-container td {{
+                                padding: 8px 12px;
+                                border: 1px solid #444;
+                            }}
+                            .tabla-container th {{
+                                background-color: #333;
+                                color: white;
+                            }}
+                            .tabla-container tr:nth-child(even) {{
+                                background-color: #f2f2f2;
+                            }}
+                            .tabla-container tr:nth-child(odd) {{
+                                background-color: #fff;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <h1 style="text-align:center">Reporte de Errores Lexico</h1>
+                        <div class="tabla-container">
+                            {tabla_html}
+                        </div>
+                    </body>
+                    </html>"""
+
+        with open(nombre_archivo, "w") as archivo:
+            archivo.write(html)

@@ -1,17 +1,12 @@
 #hola
 
-
-"""    
-#adios
-COMENTARIO MULTILINEA 
-hola esto es parte del comentario
- """
 '''   
  COMENTARIO MULTILINEA 
  esto tambien es parte del comentario
-  azy'''
+  azy
+'''
 
-claves = ["codigo", "producto", "precio_compra", "precio_venta", "stock"]
+Claves = ["codigo", "producto", "precio_compra", "precio_venta", "stock"]
 
 Registros = [
     {1, "Barbacoa", 10.50, 20.00, 6}
@@ -22,17 +17,25 @@ Registros = [
 
 
 imprimir("Reporte de ");
+
 imprimir("Abarroteria");
+
 imprimirln("Reporte de ");
+
 imprimirln("Abarroteria");
 
 datos();
+
 conteo();
-    promedio("producto");
-contarsi("stock", 0);
-    sumar("stock");
-    max("precio_venta");
-    min("precio_compra");
-exportarReporte("Reporte HTML de abarroteria");
 
+promedio("stock");
 
+contarsi("stock", 6);
+
+sumar("stock");
+
+max("precio_venta");
+
+min("precio_compra");
+
+exportarReporte("si jala el titulo nuevo");

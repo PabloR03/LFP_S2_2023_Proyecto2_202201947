@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Reporte De Errores</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f2f2f2;
+                            }
+                            .tabla-container {
+                                text-align: center;
+                                margin: 20px auto;
+                                width: 80%;
+                            }
+                            .tabla-container table {
+                                width: 100%;
+                                border-collapse: collapse;
+                            }
+                            .tabla-container th, .tabla-container td {
+                                padding: 8px 12px;
+                                border: 1px solid #444;
+                            }
+                            .tabla-container th {
+                                background-color: #333;
+                                color: white;
+                            }
+                            .tabla-container tr:nth-child(even) {
+                                background-color: #f2f2f2;
+                            }
+                            .tabla-container tr:nth-child(odd) {
+                                background-color: #fff;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1 style="text-align:center">Reporte de Errores Lexico</h1>
+                        <div class="tabla-container">
+                            
+        <table>
+            <tr>
+                <th>Token</th>
+                <th>Tipo Error</th>
+                <th>Fila</th>
+                <th>Columna</th>
+            </tr>
+            
+            <tr>
+                <td>/</td>
+                <td>Léxico</td>
+                <td>21</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>-</td>
+                <td>Léxico</td>
+                <td>21</td>
+                <td>2</td>
+            </tr></table>
+                        </div>
+                    </body>
+                    </html>

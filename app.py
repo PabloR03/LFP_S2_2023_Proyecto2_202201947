@@ -1,12 +1,13 @@
 import tkinter as tk
-from tkinter import Menu, messagebox, filedialog, scrolledtext, Text, DISABLED
-from tkinter.filedialog import askopenfilename, asksaveasfilename
-import os
-#Importar clases y metodos
-from Analizador_Lexico import *
-from Analizador_Sintactico import *
+from tkinter import Menu, messagebox, filedialog, scrolledtext
+from tkinter.filedialog import asksaveasfilename
+from analizador_lexico import Lexico
+from analizador_sintactico import analizador_s
+import webbrowser
 
-prompt = '>>'
+analizador_lexico=Lexico()
+analizador_sintactico=analizador_s()
+prompt = '>>>'
 
 class ventana_principal:
     def __init__(self, root):
@@ -43,8 +44,8 @@ class ventana_principal:
             #op del menu
         op=Menu(boton_archivo,tearoff=0)
         boton_archivo["menu"]=op
-        op.add_command(label="Reporte de Tokens")
-        op.add_command(label="Reporte de Errores", command=Errores_Lexico)
+        op.add_command(label="Reporte de Tokens", command=self.repTokens)
+        op.add_command(label="Reporte de Errores", command=self.repErrores)
         op.add_command(label="Reporte de Arbol de Derivacion")
 
         # Cuadro de texto editable
@@ -93,52 +94,43 @@ class ventana_principal:
             messagebox.showerror("ERROR ... ", "Archivo no Guardado, revise la entrada")
             return
     
-    def Analizar(self):
-        
-        # Obtén el código del área de texto
-        code = self.cuadroTexto.get(1.0, tk.END)
-        imprimir_consola = ''
+    def reporte(self):
         try:
-            #lee los comentarios por aparte no hay clavo porque igual los debe ignorar
-            comentariodeunalinea = Comentariol(code)
-            print("Comentarios del tipo #" + '\n')
-            for i in comentariodeunalinea:
-                print(i)
-                self.cuadroTexto2.insert(tk.END, i)
-            comentariodevariaslineas = Comentarioll(code)
-            comentariodevariaslineas3 = comentariodevariaslineas[2]
-            print("Comentarios multilinea")
-            print("'''"+ '\n' + comentariodevariaslineas3 + '\n' + "'''")
-            self.cuadroTexto2.insert(tk.END, "'''"+ '\n' + comentariodevariaslineas3 + '\n' + "'''")
-
-            #self.cuadroTexto2.configure(state=DISABLED)
-            # Ejecuta el análisis léxico
-            instrucciones_lexico = instruccion(code)
-            lista_instrucciones = []
-            while True:
-                instrucciones_lenguaje = instrucciones_sintactico(instrucciones_lexico)
-                if instrucciones_lenguaje:
-                    lista_instrucciones.append(instrucciones_lenguaje)
-                else:
-                    break
-            # Ejecutar instrucciones
-            for elemento in lista_instrucciones:
-                if isinstance(elemento, DeclaracionClaves):
-                    continue
-                elif isinstance(elemento, Imprimir):
-                    imprimir_consola += elemento.ejecutarT()
-                elif isinstance(elemento, Imprimirln):
-                    imprimir_consola += elemento.ejecutarT()
-            print(imprimir_consola)
-                    # Muestra el resultado en la consola de salida
-            self.cuadroTexto2.config(state='normal')
-            self.cuadroTexto2.delete(1.0, tk.END)
-            self.cuadroTexto2.insert(tk.END, imprimir_consola)
-            self.cuadroTexto2.config(state='disabled')
-            messagebox.showinfo("Análisis exitoso", "El código se analizó exitosamente.")
+            if self.archivo_analizado==True:
+                messagebox.showinfo("Reporte", "Reporte Creado Correctamente.")
+            else:
+                messagebox.showerror("Error", "No se ha realizado el análisis de archivo.")
         except Exception as e:
-            messagebox.showerror(f"Ocurrió un error al analizar el código: {str(e)}")
-            print("Ocurrió un error al analizar el código: ", e)
+            messagebox.showerror("Error", f"Se ha producido un error.: {str(e)}")
+
+    def Analizar(self):
+        #try:
+            codigo_fuente = self.cuadroTexto.get(1.0, tk.END)
+            analizador_lexico.analizador_lexico(codigo_fuente)
+            analizador_lexico.reporte_tokens()
+            analizador_lexico.reporte_errores_lexicos()
+            print("***LISTA DE LEXEMAS***")
+            for lexema in analizador_lexico.lista_lexemas:
+                print("-++++-")
+                print(lexema.lexema)
+            print("**************************************")
+            analizador_sintactico.analizador_sintactico(analizador_lexico.lista_lexemas)
+
+            self.cuadroTexto2.delete(1.0, "end")
+            self.cuadroTexto2.insert(1.0, analizador_sintactico.texto_imprimir)
+
+            messagebox.showinfo("Análisis exitoso", "El código se analizó exitosamente.")
+        #except Exception:
+            #messagebox.showerror("ERROR")
+
+    def repErrores(self):
+        # Abre el archivo HTML en Chrome
+        webbrowser.open("Reportes\\202201947_rErroresLexico.html")
+        
+    def repTokens(self):
+        # Abre el archivo HTML en Chrome
+        webbrowser.open("Reportes\\202201947_rTokens.html")
+
 
 
 
