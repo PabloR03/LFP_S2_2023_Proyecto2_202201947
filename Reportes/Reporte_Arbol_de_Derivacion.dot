@@ -1,0 +1,6 @@
+
+                graph "" {
+                    subgraph cluster_0 {
+                        label="Prueba"
+                    }
+}

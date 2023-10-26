@@ -46,7 +46,7 @@ class ventana_principal:
         boton_archivo["menu"]=op
         op.add_command(label="Reporte de Tokens", command=self.repTokens)
         op.add_command(label="Reporte de Errores", command=self.repErrores)
-        op.add_command(label="Reporte de Arbol de Derivacion")
+        op.add_command(label="Reporte de Arbol de Derivacion", command=self.repArbol)
 
         # Cuadro de texto editable
         cuadrotexto_frame = tk.Frame(root, bg="dodgerblue")
@@ -109,6 +109,8 @@ class ventana_principal:
             analizador_lexico.analizador_lexico(codigo_fuente)
             analizador_lexico.reporte_tokens()
             analizador_lexico.reporte_errores_lexicos()
+            analizador_lexico.grafica_arbol_derivación()
+            #analizador_sintactico.reporte_errores_sintacticos()
             print("***LISTA DE LEXEMAS***")
             for lexema in analizador_lexico.lista_lexemas:
                 print("-++++-")
@@ -131,6 +133,9 @@ class ventana_principal:
         # Abre el archivo HTML en Chrome
         webbrowser.open("Reportes\\202201947_rTokens.html")
 
+    def repArbol(self):
+        # Abre el archivo HTML en Chrome
+        webbrowser.open("Reportes\\Reporte_Arbol_de_Derivacion.pdf")
 
 
 

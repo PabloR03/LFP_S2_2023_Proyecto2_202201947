@@ -1,5 +1,6 @@
 from Objetos.Error import Error
-
+#importar para crear una ventana emergente
+from tkinter import Menu, messagebox, filedialog, scrolledtext
 def promedio_clave(lista_clave, lista_registro, clave):
     if clave not in lista_clave:
         return None 
@@ -113,6 +114,8 @@ class analizador_s:
         self.lista_registro = []
         self.lista_error_sintactico = []
         self.texto_imprimir=""
+        self.n_linea = 1
+        self.n_columna = 1
 
     def analizador_sintactico(self, lista_lexemas):
         while lista_lexemas:
@@ -134,8 +137,23 @@ class analizador_s:
                                 break
                             else:
                                 self.lista_clave.append(lex.lexema)
+                    else: 
+                        print("Error sintáctico en la declaración de claves se esperaba un '['")
+                        self.lista_error_sintactico.append(Error("[", "Sintáctico", self.n_linea, self.n_columna))
+                        self.reporte_errores_sintacticos()
+                        break
+                else: #! para detectar errores sintácticos
+                    #messagebox.showinfo("Error Sintactico", "Error sintáctico en la declaración de claves se esperaba un '='")
+                    print("Error sintáctico en la declaración de claves se esperaba un '='")
+                    self.lista_error_sintactico.append(Error("=", "Sintáctico", self.n_linea, self.n_columna))
+                    self.reporte_errores_sintacticos()
+                    break
+            else: 
+                print("Error sintáctico en la declaración de claves se esperaba un 'Claves'")
+                self.lista_error_sintactico.append(Error("Claves", "Sintáctico", self.n_linea, self.n_columna))
+                self.reporte_errores_sintacticos()
+                break
 
-            #print("SIGUE PARA REGISTRO")
             if lexema.lexema == 'Registros':
                 igual = lista_lexemas.pop(0)
                 if igual.lexema == '=':
@@ -160,7 +178,6 @@ class analizador_s:
                                     else:
                                         nuevo_registro.append(lex.lexema)
 
-            #print("SIGUE PARA IMPRIMIRLN")
             if lexema.lexema == 'imprimirln':
                 self.texto_imprimir+="\n"
                 lexema = lista_lexemas.pop(0)
@@ -328,4 +345,73 @@ class analizador_s:
                                 if punto_coma.lexema == ';':
                                     print("Análisis imprimir Completado")
                                     self.texto_imprimir+=texto.lexema
+    
+    def reporte_errores_sintacticos(self):
+        nombre_archivo = "Reportes/202201947_rErroresSintacticos.html"
+        # Generar la tabla HTML
+        tabla_html = """
+        <table>
+            <tr>
+                <th>Token</th>
+                <th>Tipo Error</th>
+                <th>Fila</th>
+                <th>Columna</th>
+            </tr>
+            """
+        for error in self.lista_error_sintactico:
+            fila_html = f"""
+            <tr>
+                <td>{error.error}</td>
+                <td>{error.tipo}</td>
+                <td>{error.fila}</td>
+                <td>{error.columna}</td>
+            </tr>"""
+            tabla_html += fila_html
+
+        tabla_html += "</table>"
+
+        html = f"""<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Reporte De Errores Sintacticos</title>
+                        <style>
+                            body {{
+                                font-family: Arial, sans-serif;
+                                background-color: #f2f2f2;
+                            }}
+                            .tabla-container {{
+                                text-align: center;
+                                margin: 20px auto;
+                                width: 80%;
+                            }}
+                            .tabla-container table {{
+                                width: 100%;
+                                border-collapse: collapse;
+                            }}
+                            .tabla-container th, .tabla-container td {{
+                                padding: 8px 12px;
+                                border: 1px solid #444;
+                            }}
+                            .tabla-container th {{
+                                background-color: #333;
+                                color: white;
+                            }}
+                            .tabla-container tr:nth-child(even) {{
+                                background-color: #f2f2f2;
+                            }}
+                            .tabla-container tr:nth-child(odd) {{
+                                background-color: #fff;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <h1 style="text-align:center">Reporte de Errores Sintactico</h1>
+                        <div class="tabla-container">
+                            {tabla_html}
+                        </div>
+                    </body>
+                    </html>"""
+
+        with open(nombre_archivo, "w") as archivo:
+            archivo.write(html)
 

@@ -1,5 +1,6 @@
 from Objetos.Lexema import Lexema
 from Objetos.Error import Error
+import os
 
 class Lexico:
 
@@ -480,3 +481,55 @@ class Lexico:
 
         with open(nombre_archivo, "w") as archivo:
             archivo.write(html)
+
+    def grafica_arbol_derivación(self):
+        try:
+            # Tu código para generar el archivo DOT
+            lista_lexema = self.lista_lexemas.copy()
+            nombre_archivo = "Reportes/Reporte_Arbol_de_Derivacion"
+            f = open(nombre_archivo + '.dot', 'w')
+            texto_g = """
+                graph "" {
+                    subgraph cluster_0 {
+                        label="Prueba"
+                    }"""
+            contador_subgrafo=1
+            contador_nodo=1
+            while lista_lexema:
+                lexema = lista_lexema.pop(0)
+                if lexema.lexema == "imprimir" or  lexema.lexema == "imprimirln" or  lexema.lexema == "conteo" or  lexema.lexema == "promedio" or  lexema.lexema == "contarsi" or lexema.lexema == "datos" or lexema.lexema == "sumar" or  lexema.lexema == "max" or  lexema.lexema == "min" or  lexema.lexema == "exportarReporte":
+                    texto_g+= """subgraph cluster0"""+str(contador_subgrafo)+"""{\n"""
+                    nodo_actual = lexema.lexema
+                    contador_actual=contador_nodo
+                    contador_nodo+=1
+                    texto_g += """n00"""+str(contador_actual)+"""[label="""+f'"'+nodo_actual+f'"'+"""];\n"""
+                    while lista_lexema:
+                        lex = lista_lexema[0]
+                        if lex.lexema == ';':
+                            texto_g += """n00"""+str(contador_nodo)+""" [label="""+f'"'+str(lex.lexema)+f'"'+"""];\n"""
+                            texto_g += """n00"""+str(contador_actual)+ """--"""+ """n00"""+str(contador_nodo)+""" ;\n"""
+                            break
+                        if lex.lexema !='"':
+                            texto_g += """n00"""+str(contador_nodo)+""" [label="""+f'"'+str(lex.lexema)+f'"'+"""];\n"""
+                            texto_g += """n00"""+str(contador_actual)+ """--"""+ """n00"""+str(contador_nodo)+""" ;\n"""
+                            contador_nodo+=1
+                        else:
+                            texto_g += """n00"""+str(contador_nodo)+""" [label="""+f'"'+"``"+f'"'+"""];\n"""
+                            texto_g += """n00"""+str(contador_actual)+ """--"""+ """n00"""+str(contador_nodo)+""" ;\n"""
+                            contador_nodo+=1
+                        lista_lexema.pop(0)
+                    texto_g += """\n}"""
+                    contador_subgrafo+=1
+                    contador_nodo+=1
+            texto_g += """\n}"""
+            f.write(texto_g)
+            f.close()
+            os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+            os.system(f'dot -Tpdf {nombre_archivo}.dot -o {nombre_archivo}.pdf')
+            # Luego, intenta convertir el archivo DOT a PDF
+            os.system(f'dot -Tpdf {nombre_archivo}.dot -o {nombre_archivo}.pdf')
+            print("Archivo PDF generado exitosamente.")
+        except Exception as e:
+            print(f"Error al generar el archivo PDF: {str(e)}")
+        
+        
