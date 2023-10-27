@@ -120,7 +120,8 @@ class ventana_principal:
 
             self.cuadroTexto2.delete(1.0, "end")
             self.cuadroTexto2.insert(1.0, analizador_sintactico.texto_imprimir)
-
+            self.agregar_prompt()
+            self.cuadroTexto2.configure(state="disabled")
             messagebox.showinfo("Análisis exitoso", "El código se analizó exitosamente.")
         #except Exception:
             #messagebox.showerror("ERROR")
@@ -136,6 +137,15 @@ class ventana_principal:
     def repArbol(self):
         # Abre el archivo HTML en Chrome
         webbrowser.open("Reportes\\Reporte_Arbol_de_Derivacion.pdf")
+
+    def agregar_prompt(self):
+        texto = self.cuadroTexto2.get("1.0", "end-1c")  # Obtén el contenido del cuadro de texto
+        lineas = texto.split("\n")  # Separa el texto en líneas
+        # Agrega ">>>" al inicio de cada línea
+        nuevo_texto = "\n".join([f">>> {linea}" for linea in lineas])
+        # Actualiza el contenido del cuadro de texto
+        self.cuadroTexto2.delete("1.0", "end")
+        self.cuadroTexto2.insert("1.0", nuevo_texto)
 
 
 
