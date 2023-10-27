@@ -137,22 +137,22 @@ class analizador_s:
                                 break
                             else:
                                 self.lista_clave.append(lex.lexema)
-                    else: 
-                        print("Error sintáctico en la declaración de claves se esperaba un '['")
-                        self.lista_error_sintactico.append(Error("[", "Sintáctico", self.n_linea, self.n_columna))
-                        self.reporte_errores_sintacticos()
-                        break
-                else: #! para detectar errores sintácticos
+                    #else: 
+                        #print("Error sintáctico en la declaración de claves se esperaba un '['")
+                        #self.lista_error_sintactico.append(Error("[", "Sintáctico", self.n_linea, self.n_columna))
+                        #self.reporte_errores_sintacticos()
+                        #break
+                #else: #! para detectar errores sintácticos
                     #messagebox.showinfo("Error Sintactico", "Error sintáctico en la declaración de claves se esperaba un '='")
-                    print("Error sintáctico en la declaración de claves se esperaba un '='")
-                    self.lista_error_sintactico.append(Error("=", "Sintáctico", self.n_linea, self.n_columna))
-                    self.reporte_errores_sintacticos()
-                    break
-            else: 
-                print("Error sintáctico en la declaración de claves se esperaba un 'Claves'")
-                self.lista_error_sintactico.append(Error("Claves", "Sintáctico", self.n_linea, self.n_columna))
-                self.reporte_errores_sintacticos()
-                break
+                    #print("Error sintáctico en la declaración de claves se esperaba un '='")
+                    #.lista_error_sintactico.append(Error("=", "Sintáctico", self.n_linea, self.n_columna))
+                    #self.reporte_errores_sintacticos()
+                    #break
+            #else: 
+                #print("Error sintáctico en la declaración de claves se esperaba un 'Claves'")
+                #self.lista_error_sintactico.append(Error("Claves", "Sintáctico", self.n_linea, self.n_columna))
+                #self.reporte_errores_sintacticos()
+                #break
 
             if lexema.lexema == 'Registros':
                 igual = lista_lexemas.pop(0)

@@ -2,5 +2,177 @@
                 graph "" {
                     subgraph cluster_0 {
                         label="Prueba"
-                    }
+                    }subgraph cluster01{
+n001[label="imprimir"];
+n002 [label="("];
+n001--n002 ;
+n003 [label="``"];
+n001--n003 ;
+n004 [label="Reporte de "];
+n001--n004 ;
+n005 [label="``"];
+n001--n005 ;
+n006 [label=")"];
+n001--n006 ;
+n007 [label=";"];
+n001--n007 ;
+
+}subgraph cluster02{
+n008[label="imprimir"];
+n009 [label="("];
+n008--n009 ;
+n0010 [label="``"];
+n008--n0010 ;
+n0011 [label="Abarrotería"];
+n008--n0011 ;
+n0012 [label="``"];
+n008--n0012 ;
+n0013 [label=")"];
+n008--n0013 ;
+n0014 [label=";"];
+n008--n0014 ;
+
+}subgraph cluster03{
+n0015[label="imprimirln"];
+n0016 [label="("];
+n0015--n0016 ;
+n0017 [label="``"];
+n0015--n0017 ;
+n0018 [label="Reporte de "];
+n0015--n0018 ;
+n0019 [label="``"];
+n0015--n0019 ;
+n0020 [label=")"];
+n0015--n0020 ;
+n0021 [label=";"];
+n0015--n0021 ;
+
+}subgraph cluster04{
+n0022[label="imprimirln"];
+n0023 [label="("];
+n0022--n0023 ;
+n0024 [label="``"];
+n0022--n0024 ;
+n0025 [label="Abarrotería"];
+n0022--n0025 ;
+n0026 [label="``"];
+n0022--n0026 ;
+n0027 [label=")"];
+n0022--n0027 ;
+n0028 [label=";"];
+n0022--n0028 ;
+
+}subgraph cluster05{
+n0029[label="conteo"];
+n0030 [label="("];
+n0029--n0030 ;
+n0031 [label=")"];
+n0029--n0031 ;
+n0032 [label=";"];
+n0029--n0032 ;
+
+}subgraph cluster06{
+n0033[label="promedio"];
+n0034 [label="("];
+n0033--n0034 ;
+n0035 [label="``"];
+n0033--n0035 ;
+n0036 [label="precio_venta"];
+n0033--n0036 ;
+n0037 [label="``"];
+n0033--n0037 ;
+n0038 [label=")"];
+n0033--n0038 ;
+n0039 [label=";"];
+n0033--n0039 ;
+
+}subgraph cluster07{
+n0040[label="contarsi"];
+n0041 [label="("];
+n0040--n0041 ;
+n0042 [label="``"];
+n0040--n0042 ;
+n0043 [label="precio_venta"];
+n0040--n0043 ;
+n0044 [label="``"];
+n0040--n0044 ;
+n0045 [label=","];
+n0040--n0045 ;
+n0046 [label="16.0"];
+n0040--n0046 ;
+n0047 [label=")"];
+n0040--n0047 ;
+n0048 [label=";"];
+n0040--n0048 ;
+
+}subgraph cluster08{
+n0049[label="datos"];
+n0050 [label="("];
+n0049--n0050 ;
+n0051 [label=")"];
+n0049--n0051 ;
+n0052 [label=";"];
+n0049--n0052 ;
+
+}subgraph cluster09{
+n0053[label="sumar"];
+n0054 [label="("];
+n0053--n0054 ;
+n0055 [label="``"];
+n0053--n0055 ;
+n0056 [label="stock"];
+n0053--n0056 ;
+n0057 [label="``"];
+n0053--n0057 ;
+n0058 [label=")"];
+n0053--n0058 ;
+n0059 [label=";"];
+n0053--n0059 ;
+
+}subgraph cluster010{
+n0060[label="max"];
+n0061 [label="("];
+n0060--n0061 ;
+n0062 [label="``"];
+n0060--n0062 ;
+n0063 [label="precio_compra"];
+n0060--n0063 ;
+n0064 [label="``"];
+n0060--n0064 ;
+n0065 [label=")"];
+n0060--n0065 ;
+n0066 [label=";"];
+n0060--n0066 ;
+
+}subgraph cluster011{
+n0067[label="min"];
+n0068 [label="("];
+n0067--n0068 ;
+n0069 [label="``"];
+n0067--n0069 ;
+n0070 [label="precio_venta"];
+n0067--n0070 ;
+n0071 [label="``"];
+n0067--n0071 ;
+n0072 [label=")"];
+n0067--n0072 ;
+n0073 [label=";"];
+n0067--n0073 ;
+
+}subgraph cluster012{
+n0074[label="exportarReporte"];
+n0075 [label="("];
+n0074--n0075 ;
+n0076 [label="``"];
+n0074--n0076 ;
+n0077 [label="Reporte HTML De Abarrotería"];
+n0074--n0077 ;
+n0078 [label="``"];
+n0074--n0078 ;
+n0079 [label=")"];
+n0074--n0079 ;
+n0080 [label=";"];
+n0074--n0080 ;
+
+}
 }
