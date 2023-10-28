@@ -315,7 +315,7 @@ class Lexico:
             else:
                 lexema += char
         return None, None
-    
+
     def armar_comentario(self, cadena):
         lexema = ''
         puntero = ''
@@ -343,7 +343,7 @@ class Lexico:
             elif char != ',' or char != ')':
                     numero += char
         return None, None
-    
+
     def reporte_tokens(self):
         nombre_archivo = "REportes/202201947_rTokens.html"
         # Generar la tabla HTML
@@ -365,9 +365,7 @@ class Lexico:
                 <td>{lexema_obj.columna}</td>
             </tr>"""
             tabla_html += fila_html
-
         tabla_html += "</table>"
-
         html = f"""<!DOCTYPE html>
                     <html>
                     <head>
@@ -409,7 +407,6 @@ class Lexico:
                         </div>
                     </body>
                     </html>"""
-
         with open(nombre_archivo, "w") as archivo:
             archivo.write(html)
 
@@ -434,9 +431,7 @@ class Lexico:
                 <td>{error.columna}</td>
             </tr>"""
             tabla_html += fila_html
-
         tabla_html += "</table>"
-
         html = f"""<!DOCTYPE html>
                     <html>
                     <head>
@@ -478,7 +473,6 @@ class Lexico:
                         </div>
                     </body>
                     </html>"""
-
         with open(nombre_archivo, "w") as archivo:
             archivo.write(html)
 
@@ -531,5 +525,3 @@ class Lexico:
             print("Archivo PDF generado exitosamente.")
         except Exception as e:
             print(f"Error al generar el archivo PDF: {str(e)}")
-        
-        
