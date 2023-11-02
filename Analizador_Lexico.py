@@ -209,14 +209,19 @@ class Lexico:
 
             elif char.isdigit():
                 token, cadena = self.armar_numero(cadena)
-                if token and cadena:
+                if token is not None and cadena:
                     self.n_columna += 1
                     #! Armamos lexema como clase
-                    n = Lexema(token, self.n_linea, self.n_columna, "NUMERO")
+                    if token == 0:
+                        tipo_lexema = "ENTERO"  # Si el token es 0, considerarlo como un número entero
+                    else:
+                        tipo_lexema = "NUMERO"
+                    n = Lexema(token, self.n_linea, self.n_columna, tipo_lexema)
 
                     self.lista_lexemas.append(n)
                     self.n_columna += len(str(token)) + 1
                     puntero = 0
+
 
             elif char == '[' or char == ']':
                 # ! Armamos lexema como clase
@@ -239,14 +244,6 @@ class Lexico:
             elif char == ';':
                 c = Lexema(char, self.n_linea, self.n_columna, 'PUNTO_Y_COMA')
                 self.lista_lexemas.append(c)
-                cadena = cadena[1:]
-                puntero = 0
-                self.n_columna += 1
-
-            elif char=="0":
-                print("ENCONTRÓ UN CERO")
-                nuevo_lexema = Lexema(0, self.n_linea, self.n_columna, 'NUMERO')
-                self.lista_lexemas.append(nuevo_lexema)
                 cadena = cadena[1:]
                 puntero = 0
                 self.n_columna += 1

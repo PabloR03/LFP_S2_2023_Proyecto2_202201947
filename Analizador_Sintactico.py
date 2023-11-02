@@ -3,23 +3,33 @@ from Objetos.Error import Error
 from tkinter import Menu, messagebox, filedialog, scrolledtext
 def promedio_clave(lista_clave, lista_registro, clave):
     if clave not in lista_clave:
-        return None 
+        return None
+
     indice_clave = lista_clave.index(clave)
-    valores_clave = [registro[indice_clave] for registro in lista_registro if isinstance(registro[indice_clave], (int, float))]
+    valores_clave = [float(registro[indice_clave]) for registro in lista_registro if isinstance(registro[indice_clave], (int, float))]
+
     if not valores_clave:
         return 0
+
     promedio = sum(valores_clave) / len(valores_clave)
     return promedio
 
+
 def contarsi_clave(lista_clave, lista_registro, clave, valor):
     if clave not in lista_clave:
-        return None  # La clave no está en la lista_clave
+        return None  # La clave no está en lista_clave
     indice_clave = lista_clave.index(clave)
     contador = 0
+    valor_float = float(valor)  # Convierte el valor a float
+
     for registro in lista_registro:
-        if len(registro) > indice_clave and registro[indice_clave] == valor:
+        if (len(registro) > indice_clave and 
+            isinstance(registro[indice_clave], (int, float)) and 
+            float(registro[indice_clave]) == valor_float):
             contador += 1
+
     return contador
+
 
 def datos_consola(lista_clave, lista_registro):
     texto=""
@@ -28,30 +38,39 @@ def datos_consola(lista_clave, lista_registro):
         texto=texto+registro_formateado+"\n"
     return texto
 
-def sumar_clave(lista_clave, lista_registro, campo):
-    if campo not in lista_clave:
+def sumar_clave(lista_clave, lista_registro, clave):
+    if clave not in lista_clave:
         return None
-    indice_clave = lista_clave.index(campo)
-    suma = sum(registro[indice_clave] for registro in lista_registro)
+
+    indice_clave = lista_clave.index(clave)
+    valores_clave = [float(registro[indice_clave]) for registro in lista_registro if isinstance(registro[indice_clave], (int, float))]
+
+    if not valores_clave:
+        return 0
+
+    suma = sum(valores_clave)
     return suma
+
+
 
 def maximo_clave(lista_clave, lista_registro, clave):
     if clave not in lista_clave:
         return None  # La clave no está en la lista_clave
     indice_clave = lista_clave.index(clave)
-    valores_clave = [registro[indice_clave] for registro in lista_registro]
+    valores_clave = [float(registro[indice_clave]) for registro in lista_registro if isinstance(registro[indice_clave], (int, float))]
     if not valores_clave:
-        return None  # No hay valores para calcular el máximo
+        return None  # No hay valores válidos para calcular el máximo
     maximo = max(valores_clave)
     return maximo
+
 
 def minimo_clave(lista_clave, lista_registro, clave):
     if clave not in lista_clave:
         return None  # La clave no está en la lista_clave
     indice_clave = lista_clave.index(clave)
-    valores_clave = [registro[indice_clave] for registro in lista_registro]
+    valores_clave = [float(registro[indice_clave]) for registro in lista_registro if isinstance(registro[indice_clave], (int, float))]
     if not valores_clave:
-        return None  # No hay valores para calcular el mínimo
+        return None  # No hay valores válidos para calcular el mínimo
     minimo = min(valores_clave)
     return minimo
 
